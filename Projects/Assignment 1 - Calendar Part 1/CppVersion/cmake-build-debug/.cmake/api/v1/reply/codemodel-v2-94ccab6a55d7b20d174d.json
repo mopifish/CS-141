@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "CppVersion",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "CppVersion::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CppVersion-Debug-c991e10f18d3926c1bb0.json",
+					"name" : "CppVersion",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Drake/OneDrive/Documents/CS-141/Projects/Assignment 1 - Calendar Part 1/CppVersion/cmake-build-debug",
+		"source" : "C:/Users/Drake/OneDrive/Documents/CS-141/Projects/Assignment 1 - Calendar Part 1/CppVersion"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
