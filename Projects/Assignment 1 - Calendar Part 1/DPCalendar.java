@@ -11,6 +11,43 @@ import java.util.Scanner;
 import java.util.Calendar;
 
 public class DPCalendar{
+	//-------Main Function--------
+	public static void main(String[] args){
+		// -- Initial Declarations
+		Scanner input = new Scanner(System.in); // Declare input
+		Calendar cal = Calendar.getInstance();
+		int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+		int currentMonth = cal.get(Calendar.MONTH) +1;
+		String calendarPicture = "┌───────────────────────────────────────────────┐\n│                                    ===========│\n│                                    ===========│\n│                                      =========│\n│                 #######              =========│\n│                ##     ###            =========│\n│               ##@ v @   ##            ========│\n│       =       #     ###  #            ========│\n│       ==      #      ## ###           ========│\n│        ====   ###      #####     =============│\n│           ==    ########    ==================│\n│          ========^===^========================│\n│                       ========================│\n│    bird             ===              =========│\n│                                        =======│\n│                                       ========│\n│                                       ========│\n│                                       ========│\n│                                       ========│\n└───────────────────────────────────────────────┘";
+
+		// -- Startup Message
+		clearOutput(); // Clear current screen (for visual consistency)
+		System.out.println("Welcome to the 2023-2024 Un-Official Bird Calendar!");
+		
+		// -- Fetch and parse user input
+		System.out.println("What date would you like to look at? (mm/dd)");
+		String userInput = input.next();
+		System.out.print("\n");
+
+		int inputMonth = monthFromDate(userInput);
+		int inputDay = dayFromDate(userInput);
+
+		// -- Print month from user input
+		clearOutput();	
+		System.out.println(calendarPicture);
+		drawMonth(inputMonth);
+		displayDate(inputMonth, inputDay);
+		pauseOutput("\n\nPress enter to continue...");
+
+		// -- Print current month from calendar
+		clearOutput();
+		System.out.println("This Month: ");
+		System.out.println(calendarPicture);
+		drawMonth(currentMonth);
+		displayDate(currentMonth, currentDay); // Display date using current month and current day
+		pauseOutput("\n\nPress enter to quit");
+	}
+
 	//------Draw functions------
 	public static void drawMonth(int month){ 
 	// Draw Month Function; Draws 5 calendar rows
@@ -72,40 +109,5 @@ public class DPCalendar{
 		}
 	}
 
-	//-------Main Function--------
-	public static void main(String[] args){
-		// -- Initial Declarations
-		Scanner input = new Scanner(System.in); // Declare input
-		Calendar cal = Calendar.getInstance();
-		int currentDay = cal.get(Calendar.DAY_OF_MONTH);
-		int currentMonth = cal.get(Calendar.MONTH) +1;
-		String calendarPicture = "┌───────────────────────────────────────────────┐\n│                                    ===========│\n│                                    ===========│\n│                                      =========│\n│                 #######              =========│\n│                ##     ###            =========│\n│               ##@ v @   ##            ========│\n│       =       #     ###  #            ========│\n│       ==      #      ## ###           ========│\n│        ====   ###      #####     =============│\n│           ==    ########    ==================│\n│          ========^===^========================│\n│                       ========================│\n│    bird             ===              =========│\n│                                        =======│\n│                                       ========│\n│                                       ========│\n│                                       ========│\n│                                       ========│\n└───────────────────────────────────────────────┘";
 
-		// -- Startup Message
-		clearOutput(); // Clear current screen (for visual consistency)
-		System.out.println("Welcome to the 2023-2024 Un-Official Bird Calendar!");
-		
-		// -- Fetch and parse user input
-		System.out.println("What date would you like to look at? (mm/dd)");
-		String userInput = input.next();
-		System.out.print("\n");
-
-		int inputMonth = monthFromDate(userInput);
-		int inputDay = dayFromDate(userInput);
-
-		// -- Print month from user input
-		clearOutput();	
-		System.out.println(calendarPicture);
-		drawMonth(inputMonth);
-		displayDate(inputMonth, inputDay);
-		pauseOutput("\n\nPress enter to continue...");
-
-		// -- Print current month from calendar
-		clearOutput();
-		System.out.println("This Month: ");
-		System.out.println(calendarPicture);
-		drawMonth(currentMonth);
-		displayDate(currentMonth, currentDay); // Display date using current month and current day
-		pauseOutput("\n\nPress enter to quit");
-	}
 }
