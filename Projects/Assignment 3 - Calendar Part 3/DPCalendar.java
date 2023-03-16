@@ -16,8 +16,6 @@ TODO:
 - Event File Reading
 	- Read event file
 	- Store events
-- File Printing
-	- Print calendar to file
 */
 
 
@@ -65,7 +63,14 @@ public class DPCalendar{
 
 					break;
 				case "ev":
-					System.out.println("You EV'd!");
+					Date eventDate = new Date(getUserDate());
+					String eventName = getUserInput("Please enter an Event: ");
+					while (eventName.length() > 30) {
+						System.out.println("Event names must be under 30 characters!");
+						eventName = getUserInput("Please enter an Event: ");
+					}
+
+					calendar.addEvent(eventDate, eventName);
 					break;
 				case "ef":
 					try {

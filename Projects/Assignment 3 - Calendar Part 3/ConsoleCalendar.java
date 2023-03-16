@@ -4,12 +4,16 @@
 */
 
 import java.util.Calendar;
+import java.util.Scanner;
+import java.util.Arrays;
+import java.io.*;
 
 public class ConsoleCalendar {
 	
 	private static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	private static final int[] DAYS_PER_MONTH = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+	private String[][] eventsList = new String[12][];
 	private String picture = "┌───────────────────────────────────────────────┐\n│                                    ===========│\n│                                    ===========│\n│                                      =========│\n│                 #######              =========│\n│                ##     ###            =========│\n│               ##@ v @   ##            ========│\n│       =       #     ###  #            ========│\n│       ==      #      ## ###           ========│\n│        ====   ###      #####     =============│\n│           ==    ########    ==================│\n│          ========^===^========================│\n│                       ========================│\n│    bird             ===              =========│\n│                                        =======│\n│                                       ========│\n│                                       ========│\n│                                       ========│\n│                                       ========│\n└───────────────────────────────────────────────┘\n";
 	private Date date;
 
@@ -18,10 +22,46 @@ public class ConsoleCalendar {
 		// Calendar initializes on current day/month
 		Calendar cal = Calendar.getInstance();
 		this.date = new Date(month + "/" + day);
+		initializeEventsList();
 	}
 
+	// --- Init functions ---
+	public void initializeEventsList(){
+		// Initializes Array size
+		for (int i = 0; i < eventsList.length; i++){
+			eventsList[i] = new String[getLengthOfMonth(i+1)];
+		}
+
+		File file;
+
+		file = new File("calendarEvents.txt");
+		try{
+			Scanner fileReader = new Scanner(file);
+
+			while (fileReader.hasNextLine()){
+
+				String eventLine = fileReader.nextLine();
+				System.out.println(eventLine);
+				Date eventDate = new Date(eventLine.substring(0, eventLine.indexOf(" ")));
+				String event = eventLine.substring(eventLine.indexOf(" ")+1, eventLine.length()).replace("_", " ");
+				eventsList[eventDate.getMonth()-1][eventDate.getDay()-1] = event;
+			}
+
+		} catch (FileNotFoundException e){
+			System.out.println("No Events Found");
+		}
+
+	}
 
 	// --- Setget Functions ---
+	public void addEvent(Date eventDate, String eventName){
+		eventsList[eventDate.getMonth()-1][eventDate.getDay()-1] = eventName;
+	}
+
+	public String[][] getEventsList(){
+		return eventsList;
+	}
+
 	public void setDate(String newDate){
 		date.setDate(newDate);
 	}
@@ -56,9 +96,9 @@ public class ConsoleCalendar {
 		return picture + monthToString() + getDate().toString();
 	}
 	public String monthToString(){ 
-		String output = "\n\t\t   " + MONTH_NAMES[getMonth()-1] + "\n\n";
-		output += "  Sun    Mon    Tue    Wed    Thu    Fri    Sat  \n";
-		for (int i = 0; i < 5; i++){
+		String output = "                                      " + MONTH_NAMES[getMonth()-1] + "\n\n";
+		output +=       "     Sun         Mon         Tue         Wed         Thu         Fri         Sat  \n";
+		for (int i = 0; i < 5; i++){  
 			output += weekToString(i);
 		}
 
@@ -67,10 +107,11 @@ public class ConsoleCalendar {
 	public String weekToString(int row){
 		String output = "";
 
-		String unmarkedCell = "==================|             %3d||                ||                |=================="; 				// ASCII Cell art stored in a string, 4 even segments
-		String markedCell =   "==================|xxxxxxxxxxxxx%3d||xxxxxxxxxxxxxxxx||xxxxxxxxxxxxxxxx|=================="; 					// ASCII Cell art stored in a string, 4 even segments
-		String emptyCell =    "==================|                ||                ||                |=================="; 					// ASCII Cell art stored in a string, 4 even segments
-		int cellSize = unmarkedCell.length()/5; 									// Gets size of 1 calendar cell
+		String unmarkedCell = "============|       %3d||          ||          ||          |============"; 				// ASCII Cell art stored in a string, 4 even segments
+		String eventCell =    "============|       %3d||1111111111||2222222222||3333333333|============"; 				// ASCII Cell art stored in a string, 4 even segments
+		String markedCell =   "============|xxxxxxx%3d||xxxxxxxxxx||xxxxxxxxxx||xxxxxxxxxx|============"; 					// ASCII Cell art stored in a string, 4 even segments
+		String emptyCell =    "============|          ||          ||          ||          |============"; 					// ASCII Cell art stored in a string, 4 even segments
+		int cellSize = unmarkedCell.length()/6; 									// Gets size of 1 calendar cell
 
 		int firstDayOfMonth = getDayOfWeek(getMonth(), 1) - 1;
 
@@ -85,13 +126,28 @@ public class ConsoleCalendar {
 					cell = markedCell; 
 				} else if (dayOfMonth > getLengthOfMonth(getMonth()) || dayOfMonth < 1) { 
 					cell = emptyCell;
+				} else if (eventsList[getMonth()-1][dayOfMonth-1] != null){
+					cell = eventCell;
 				}
 				
 				String cellRow = cell.substring(i, i+cellSize); 
 
 				// Add cell row to output
+									
+
 				if (cellRow.indexOf("%3d") != -1){			// If row displays a number date, printf, else print normal
 					output += String.format(cellRow, dayOfMonth);
+				} else if (cell == eventCell){
+					String event = String.format("%-30s", eventsList[getMonth()-1][dayOfMonth-1]);
+					if (cellRow.indexOf("1") != -1){
+						output += cellRow.replace("1111111111", String.format("%10s", event.substring(0, 10)));
+					}else if (cellRow.indexOf("2") != -1 && event.length() > 10){
+						output += cellRow.replace("2222222222", String.format("%10s", event.substring(10, 20)));
+					}else if (cellRow.indexOf("3") != -1 && event.length() > 20){
+						output += cellRow.replace("3333333333", String.format("%10s", event.substring(20, 30)));
+					}else{
+						output += cellRow;
+					}
 				}else{ 
 					output += cellRow; 
 				}
