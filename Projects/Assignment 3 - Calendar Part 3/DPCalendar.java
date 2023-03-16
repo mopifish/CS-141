@@ -2,26 +2,17 @@
 // 3.14.23
 // CS &141
 // Assignment #3 - Calendar Part 3
-/* This programs takes user input to display a given month on a calendar,
-   then prints the current month on the calendar. 						
+/* This is a multifunctional calendar app that takes user input to perform a variety
+	of tasks. 						
 
-   This project took me aproximately 									*/
-
-
-/*
-TODO:
-- Event Scheduling
-	- Take in Events
-	- Store Events
-- Event File Reading
-	- Read event file
-	- Store events
-*/
-
+   This project took me aproximately 3-4 hours.*/
 
 import java.util.Scanner;
 import java.util.Calendar;
 import java.io.*;
+// Custom Classes:
+// ConsoleCalendar.java
+// Date.java
 
 public class DPCalendar{	
 	// --- Main Function ---
@@ -43,26 +34,27 @@ public class DPCalendar{
 			userCommand = getUserCommand();
 
 			switch (userCommand){
-				case "e":
+				case "e": // Enter Date
 					calendar.setDate(getUserDate());
 					System.out.println(calendar);
 
 					break;
-				case "t":
+				case "t": // Get Current Date
 					calendar.setDate((javaCal.get(Calendar.MONTH) +1) + "/" + javaCal.get(Calendar.DAY_OF_MONTH));
 					System.out.println(calendar);
+
 					break;
-				case "n":
+				case "n": // Next Month
 					calendar.setMonth(calendar.getMonth()+1);
 					System.out.println(calendar);
 					
 					break;
-				case "p":
+				case "p": // Previous Month
 					calendar.setMonth(calendar.getMonth()-1);
 					System.out.println(calendar);
 
 					break;
-				case "ev":
+				case "ev": // Enter Event
 					Date eventDate = new Date(getUserDate());
 					String eventName = getUserInput("Please enter an Event: ");
 					while (eventName.length() > 30) {
@@ -71,8 +63,9 @@ public class DPCalendar{
 					}
 
 					calendar.addEvent(eventDate, eventName);
+
 					break;
-				case "ef":
+				case "ef": // Export Calendar to TXT
 					try {
 						PrintStream exportFile = new PrintStream(new File("Exports\\" + getUserInput("Export File Name: ")));
 						calendar.setDate(getUserDate());
@@ -82,7 +75,7 @@ public class DPCalendar{
 					}
 					
 					break;
-				case "q":
+				case "q": // Quit
 					quit = true;
 					break;
 			}
